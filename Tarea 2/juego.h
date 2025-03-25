@@ -2,7 +2,7 @@
 #include "matrizGato.h"
 #include "jugador.h"
 
-class juego{
+class juego {
 private:
 	jugador* j1;
 	jugador* j2;
@@ -15,7 +15,7 @@ public:
 	juego();
 	~juego();
 	void iniciarJuego(); //inicia las partidas la cantidad de n veces necesarias
-	void instruccionesGato(); 
+	void instruccionesGato();
 	void simboloJugador(); //llena los datos de los jugadores y el simbolo a escoger
 	void realizarMovimientos(); //la interaccion y usabilidad del programa
 	bool estaVacia(int, int); //inserta el estado cuando el resultado es verdadero 

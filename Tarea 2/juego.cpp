@@ -1,17 +1,17 @@
 #include "juego.h"
 
-juego::juego(){
+juego::juego() {
 	j1 = new jugador();
 	j2 = new jugador();
 }
 
-juego::~juego(){
+juego::~juego() {
 	delete j1;
 	delete j2;
 	delete g;
 }
 
-void juego::iniciarJuego(){
+void juego::iniciarJuego() {
 	string x = "si";
 	int numjuego = 1;
 	instruccionesGato();
@@ -19,7 +19,7 @@ void juego::iniciarJuego(){
 	system("cls");
 	simboloJugador();
 
-	while (x == "si"){
+	while (x == "si") {
 		cout << endl << "----------------------------- Partida numero: " << numjuego << "-------------------------------" << endl;
 		j1->setJuegosRealizados(numjuego);
 		j2->setJuegosRealizados(numjuego);
@@ -28,12 +28,12 @@ void juego::iniciarJuego(){
 		cin >> x;
 
 		system("cls");
-		numjuego++; 
+		numjuego++;
 	}
 	mostrarInfo();
 }
 
-void juego::instruccionesGato(){
+void juego::instruccionesGato() {
 	cout << "-----------------------------------------------------------------------------------------------------------" << endl;
 	cout << "\t\t\tJUEGO DEL GATO" << endl;
 	cout << "\-------------------------INSTRUCCIONES--------------------------------------------------------------------" << endl;
@@ -44,7 +44,7 @@ void juego::instruccionesGato(){
 	cout << "------------------------------------------------------------------------------------------------------------" << endl;
 }
 
-void juego::simboloJugador(){
+void juego::simboloJugador() {
 	string nombre;
 	char op;
 	cout << "-----------------------------------------------------------------------------------------------------------" << endl;
@@ -81,47 +81,80 @@ void juego::simboloJugador(){
 }
 
 void juego::realizarMovimientos() {
-	enJuego = true; //es verdadero cuando el juego empieza
-	turno = 1; //van contando los turnos al momento de inicializar una nueva partida
-	string cambianombre= j1->getNombre(); //cambia de nombre por cada turno
+	enJuego = true; // es verdadero cuando el juego empieza
+	turno = 1; // van contando los turnos al momento de inicializar una nueva partida
+	string cambianombre = j1->getNombre(); // cambia de nombre por cada turno
 	int fila, col;
-	mg = new matrizGato(); //se crea el constructor de un matriz
-	mg->mostrar(); //muestra el resultado vacio
+	mg = new matrizGato(); // se crea el constructor de una matriz
+	mg->mostrar(); // muestra el resultado vacío
+
 	while (enJuego) {
-		g = new gato(); //inserta cada objeto gato dentro de la matriz
+		g = new gato(); // inserta cada objeto gato dentro de la matriz
 		cout << "\t\tEl turno de: " << cambianombre << endl;
-		cout << "\t\tDigite la posicion a  jugar (0 al 2): " << endl;
-		cout << "\t\t(->) Fila:";
-		cin >> fila;
-		cout << "\t\t(!) Columna: ";
-		cin >> col;
-		while (!estaVacia(fila,col)){
-			cout << endl << endl;
-			cout << "\t\t---Digite una posicion que sea vacia---" << endl;
-			cout << "\t\t(->) Fila:";
+		cout << "\t\tDigite la posicion a jugar (0 al 2): " << endl;
+
+		// Bucle para asegurar que se ingresa un valor válido (0-2)
+		bool inputValido = false;
+		while (!inputValido) {
+			cout << "\t\t(->) Fila: ";
 			cin >> fila;
-			cout << "\t\t(!) Cloumna: ";
+			cout << "\t\t(!) Columna: ";
 			cin >> col;
 
+			// Verifica si la entrada fue un número válido y si está en el rango correcto
+			if (cin.fail() || fila < 0 || fila > 2 || col < 0 || col > 2) {
+				cout << "\t\t---Posicion invalida. Ingrese valores numericos entre 0 y 2---" << endl;
+
+				// Limpia el estado de error de cin y descarta la entrada no válida
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			else {
+				inputValido = true;
+			}
 		}
+
+		// Verifica que la posición esté vacía
+		while (!estaVacia(fila, col)) {
+			cout << endl << endl;
+			cout << "\t\t---Digite una posicion que sea vacia---" << endl;
+
+			inputValido = false;
+			while (!inputValido) {
+				cout << "\t\t(->) Fila: ";
+				cin >> fila;
+				cout << "\t\t(!) Columna: ";
+				cin >> col;
+
+				if (cin.fail() || fila < 0 || fila > 2 || col < 0 || col > 2) {
+					cout << "\t\t---Posicion invalida. Ingrese valores numericos entre 0 y 2---" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else {
+					inputValido = true;
+				}
+			}
+		}
+
+		// Continúa con el resto de la lógica del turno
 		if (turno == 1) {
 			g->setEstado(j1->getSimbolo());
 			cambianombre = j2->getNombre();
-			
 		}
-		else{
+		else {
 			g->setEstado(j2->getSimbolo());
 			cambianombre = j1->getNombre();
-			
 		}
+
 		system("cls");
 		mg->setGato(fila, col, g);
 		cambiarTurno();
 		enJuego = !finalizarJuego();
 		mg->mostrar();
 	}
-	int id = mg->ganador(j1->getSimbolo(), j2->getSimbolo());
 
+	int id = mg->ganador(j1->getSimbolo(), j2->getSimbolo());
 	if (id == 1) {
 		cout << "\t\tEl ganador es: " << j1->getNombre() << endl;
 		j1->incrementarGanes();
@@ -137,14 +170,14 @@ void juego::realizarMovimientos() {
 	}
 }
 
-bool juego::estaVacia(int fil, int col){
+bool juego::estaVacia(int fil, int col) {
 	if (mg->getGato(fil, col)->getEstado() == '_') {
 		return true;
 	}
 	return false;
 }
 
-void juego::cambiarTurno(){
+void juego::cambiarTurno() {
 	if (turno == 1) {
 		turno = 2;
 	}
@@ -153,7 +186,7 @@ void juego::cambiarTurno(){
 	}
 }
 
-bool juego::finalizarJuego(){
+bool juego::finalizarJuego() {
 	if (mg->finalizar()) {
 		return true;
 	}
@@ -165,7 +198,7 @@ bool juego::finalizarJuego(){
 	return true;
 }
 
-void juego::mostrarInfo(){
+void juego::mostrarInfo() {
 	cout << "-Nombre:" << j1->getNombre() << endl;
 	cout << "\t -Juegos realizados:" << j1->getJuegosRealizados() << endl;
 	cout << "\t -Juegos ganados:" << j1->getJuegosGanados() << endl;

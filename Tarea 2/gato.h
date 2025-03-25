@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <limits>
 
 using namespace std;
 class gato {

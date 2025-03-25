@@ -2,7 +2,7 @@
 #include <string>
 
 using namespace std;
-class jugador{
+class jugador {
 private:
 	string nombre;
 	char simbolo;

@@ -8,57 +8,57 @@ jugador::jugador() : simbolo(' ') {
 	juegosRealizados = 0;
 }
 
-jugador::jugador(string _nombre, char _simbolo){
+jugador::jugador(string _nombre, char _simbolo) {
 	nombre = _nombre;
 	simbolo = _simbolo;
 }
 
-jugador::~jugador(){}
+jugador::~jugador() {}
 
-string jugador::getNombre(){
+string jugador::getNombre() {
 	return nombre;
 }
 
-char jugador::getSimbolo(){
+char jugador::getSimbolo() {
 	return simbolo;
 }
 
-int jugador::getJuegosGanados(){
+int jugador::getJuegosGanados() {
 	return juegosGanados;
 }
 
-int jugador::getJuegosPerdidos(){
+int jugador::getJuegosPerdidos() {
 	return juegosPerdidos;
 }
 
-int jugador::getJuegosEmapatados(){
+int jugador::getJuegosEmapatados() {
 	return juegoEmpates;
 }
 
-int jugador::getJuegosRealizados(){
+int jugador::getJuegosRealizados() {
 	return juegosRealizados;
 }
 
-void jugador::setNombre(string _nombre){
+void jugador::setNombre(string _nombre) {
 	nombre = _nombre;
 }
 
-void jugador::setSimbolo(char _simbolo){
+void jugador::setSimbolo(char _simbolo) {
 	simbolo = _simbolo;
 }
 
-void jugador::setJuegosRealizados(int n){
+void jugador::setJuegosRealizados(int n) {
 	juegosRealizados = n;
 }
 
-void jugador::incrementarGanes(){
+void jugador::incrementarGanes() {
 	juegosGanados++;
 }
 
-void jugador::incrementarDerrotas(){
+void jugador::incrementarDerrotas() {
 	juegosPerdidos++;
 }
 
-int jugador::Empates(){
+int jugador::Empates() {
 	return juegoEmpates = getJuegosRealizados() - getJuegosGanados() - getJuegosPerdidos();
 }

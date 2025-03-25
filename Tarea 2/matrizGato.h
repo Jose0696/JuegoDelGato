@@ -1,6 +1,6 @@
 #pragma once
 #include"gato.h"
-class matrizGato{
+class matrizGato {
 private:
 	gato* matriz[3][3];
 
